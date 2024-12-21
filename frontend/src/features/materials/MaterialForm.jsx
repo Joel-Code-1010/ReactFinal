@@ -22,37 +22,42 @@ const MaterialForm = ({ material, onSave, onCancel }) => {
   return (
     <div>
       <h2>{material ? 'Editar Material' : 'Agregar Material'}</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='formulario' onSubmit={handleSubmit}>
         <label>
           Nombre:
-          <input
+          <input className='search-input'
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </label>
+        
         <label>
           Descripción:
-          <input
+          <input className='search-input'
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
-        <label>
+        
+        <label className='mr-1 '>
           Cantidad:
-          <input
+          <input className='search-input'
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             required
           />
         </label>
-        <button type="submit">Guardar</button>
-        <button type="button" onClick={onCancel}>
+        <div>
+            <button className='btnedit mr-1 mt-1' type="submit">Guardar</button>
+        <button className='btndelite' type="button" onClick={onCancel}>
           Cancelar
         </button>
+        </div>
+        
       </form>
     </div>
   );
