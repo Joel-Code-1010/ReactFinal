@@ -4,7 +4,7 @@
 Este proyecto consiste en un sistema web diseñado para optimizar la gestión de materiales y reportes en una empresa de servicio técnico. Permite a los administradores gestionar usuarios y materiales, asignar recursos a los técnicos, y generar reportes detallados sobre el uso de materiales y desempeño. Los técnicos pueden registrar su uso de materiales y enviar reportes diarios.
 
 titulo de ejemplo
-
+titulo de ejemplo 2
 ## Tecnologías Utilizadas
 - **Backend**: Node.js, Express.js
 - **Base de Datos**: MongoDB
