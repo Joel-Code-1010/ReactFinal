@@ -130,4 +130,58 @@
     color: white;
     margin-top: 2rem;
   }
-  
+
+  /* btn */
+  .btnclasico{
+    background-color: #4d20ff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 2px;
+    border: none;
+  }
+  .btnclasico:hover {
+    background-color:  #8162ff;
+  }
+  .btnedit{
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 2px;
+    border: none;
+  }
+    
+  .btnedit:hover {
+    background-color: #45a049;
+  }
+  .btndelite{
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 2px;
+    border: none;
+  }
+  .btndelite:hover {
+    background-color: #d32f2f;
+  }
+  .mr-1{
+    margin-right: 10px;
+  }
+ .mt-1{
+    margin-top: 10px;
+  }
+  /* buscador */
+  .search-container {
+    margin-bottom: 1rem;
+  }
+  .search-input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  /* *{border: solid black 1px;} */
+  .formulario{
+    width: 300px;
+  }

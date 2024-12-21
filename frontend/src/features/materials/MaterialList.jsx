@@ -4,15 +4,18 @@ import MaterialForm from './MaterialForm';
 
 const MaterialList = () => {
   const [materials, setMaterials] = useState([]);
+  const [filteredMaterials, setFilteredMaterials] = useState([]); // Lista filtrada
   const [error, setError] = useState('');
   const [selectedMaterial, setSelectedMaterial] = useState(null); // Para edición
   const [isAdding, setIsAdding] = useState(false);
+  const [searchText, setSearchText] = useState(''); // Texto del buscador
 
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
         const response = await materialService.getMaterials();
         setMaterials(response);
+        setFilteredMaterials(response); // Inicialmente, todos los materiales están en la lista filtrada
       } catch (err) {
         setError('Error al cargar los materiales');
       }
@@ -20,6 +23,14 @@ const MaterialList = () => {
 
     fetchMaterials();
   }, []);
+
+  // Filtrar materiales cuando el texto de búsqueda cambia
+  useEffect(() => {
+    const filtered = materials.filter((material) =>
+      material.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredMaterials(filtered);
+  }, [searchText, materials]);
 
   const handleDelete = async (materialId) => {
     try {
@@ -60,36 +71,19 @@ const MaterialList = () => {
   return (
     <div>
       <h1>Gestión de Materiales</h1>
-      <button onClick={() => setIsAdding(true)}>Agregar Material</button>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Buscar material por nombre"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      <button className="btnclasico" onClick={() => setIsAdding(true)}>
+        Agregar Material
+      </button>
       {error && <p className="error-message">{error}</p>}
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {materials.map((material) => (
-            <tr key={material._id}>
-              <td>{material.name}</td>
-              <td>{material.description}</td>
-              <td>{material.quantity}</td>
-              <td>
-                <button onClick={() => setSelectedMaterial(material)}>
-                  Editar
-                </button>
-                <button onClick={() => handleDelete(material._id)}>
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
       {(isAdding || selectedMaterial) && (
         <MaterialForm
           material={selectedMaterial}
@@ -100,6 +94,39 @@ const MaterialList = () => {
           }}
         />
       )}
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredMaterials.map((material) => (
+            <tr key={material._id}>
+              <td>{material.name}</td>
+              <td>{material.description}</td>
+              <td>{material.quantity}</td>
+              <td>
+                <button
+                  className="btnedit mr-1"
+                  onClick={() => setSelectedMaterial(material)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="btndelite"
+                  onClick={() => handleDelete(material._id)}
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
