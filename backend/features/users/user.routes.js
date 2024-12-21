@@ -16,6 +16,10 @@ router.get('/search', protect, authorize('Administrador'), searchUserByName);
 // Ruta para crear un nuevo usuario (Solo administradores)
 router.post('/create', protect, authorize('Administrador'), createUser);
 
+//Ruta momentanea solo para crear un user adminstrador
+router.post('/create', createUser);
+
+
 // Ruta para actualizar los datos de un usuario
 router.put('/update/:id', protect, authorize('Administrador'), updateUser);
 

@@ -1,99 +1,156 @@
 # Sistema de Gestión de Materiales y Reportes para Técnicos
 
-## Descripción General
-Este proyecto consiste en un sistema web diseñado para optimizar la gestión de materiales y reportes en una empresa de servicio técnico. Permite a los administradores gestionar usuarios y materiales, asignar recursos a los técnicos, y generar reportes detallados sobre el uso de materiales y desempeño. Los técnicos pueden registrar su uso de materiales y enviar reportes diarios.
+## Descripción
+Este proyecto es una aplicación web que permite la gestión de usuarios, materiales y reportes técnicos en una organización. El sistema está diseñado para optimizar la colaboración entre administradores y técnicos, ofreciendo funcionalidades como asignación de materiales y generación de reportes diarios.
 
-titulo de ejemplo
-titulo de ejemplo 2
 ## Tecnologías Utilizadas
 - **Backend**: Node.js, Express.js
 - **Base de Datos**: MongoDB
-- **Autenticación y Autorización**: JSON Web Tokens (JWT)
-- **Middleware**: Validación, protección de rutas y roles.
+- **Autenticación**: JSON Web Tokens (JWT) y Cookies
+- **Frontend**: React.js
 
-## Características del Backend
-1. **Gestión de Usuarios**:
-   - CRUD completo para Administradores y Técnicos.
-   - Validación de datos para todos los campos del modelo de usuario.
-2. **Gestión de Materiales**:
-   - CRUD completo de materiales.
-   - Relación entre materiales y el administrador que los creó.
-3. **Gestión de Asignaciones**:
-   - Asignación de materiales a técnicos con límites definidos.
-   - Seguimiento del uso y devolución de materiales no utilizados al inventario.
-4. **Reportes**:
-   - Soporte para reportes diarios con detalles de uso de materiales y desempeño de técnicos.
-5. **Autenticación y Roles**:
-   - Rutas protegidas mediante JWT.
-   - Roles definidos: Administrador y Técnico, con accesos diferenciados.
-
-## Instalación
+## Instalación y Ejecución
 ### Prerrequisitos
-- Node.js v20.16.0
-- MongoDB
+- Node.js v20.16.0 o superior
+- MongoDB Atlas o una instancia local de MongoDB
 
 ### Pasos
 1. Clona el repositorio:
    ```bash
-   git clone [URL_DEL_REPOSITORIO]
+   git clone <https://github.com/Joel-Code-1010/ReactFinal>
+   cd <NOMBRE_DEL_PROYECTO>
    ```
-2. Instala las dependencias:
+
+2. Configura las variables de entorno en un archivo `.env`:
+   ```env
+   MONGO_URI=mongodb://localhost:27017/BdFinalJoel
+   PORT=5100
+   JWT_SECRET=10102002
+   ```
+
+3. Instala las dependencias:
    ```bash
    npm install
    ```
-3. Crea un archivo `.env` con las siguientes variables:
-   ```env
-   PORT=3000
-   MONGO_URI=mongodb://localhost:27017/nombre_base_datos
-   JWT_SECRET=tu_secreto_para_jwt
-   ```
+
 4. Inicia el servidor:
    ```bash
-   npm start
+   node server.js
    ```
 
-## Endpoints Principales
-### Usuarios
-- `GET /api/users/all`: Obtener todos los usuarios activos (Solo Administradores).
-- `POST /api/users/create`: Crear un nuevo usuario.
-- `PUT /api/users/update/:id`: Actualizar un usuario existente.
+5. El servidor estará funcionando en: `http://localhost:5100`
 
-### Materiales
-- `POST /api/materials/create`: Crear un nuevo material.
-- `GET /api/materials/all`: Listar todos los materiales.
+## Pruebas de API
+Las siguientes son solicitudes de ejemplo para probar las rutas principales de la API utilizando Postman o cualquier herramienta similar.
 
-### Asignaciones
-- `POST /api/assignments/create`: Crear una asignación de materiales a un técnico.
-- `GET /api/assignments/technician/today`: Obtener asignaciones del día actual para un técnico.
+Descomenta esa ruta que esta en user.routes.js es solo para que cree un user admin 
+Ruta momentanea solo para crear un user adminstrador
+router.post('/create', createUser);
 
 ### Autenticación
-- `POST /api/auth/login`: Iniciar sesión.
-- `POST /api/auth/logout`: Cerrar sesión.
+#### Iniciar sesión
+**URL**: `POST /api/auth/login`
 
-## Ejemplos de Solicitudes y Respuestas
-### Crear Usuario
-#### Solicitud:
+**Cuerpo**:
 ```json
-POST /api/users/create
-Content-Type: application/json
 {
-  "name": "John Doe",
-  "email": "johndoe@gmail.com",
-  "password": "12345",
+  "email": "admin@gmail.com",
+  "password": "admin123"
+}
+```
+
+**Respuesta**:
+```json
+{
+  "message": "Inicio de sesión exitoso",
+  "token": "<JWT_TOKEN>"
+}
+```
+
+### Usuarios
+#### Crear usuario
+**URL**: `POST /api/users/create`
+
+**Cuerpo**:
+```json
+{
+  "name": "Juan Pérez",
+  "email": "juan.perez@gmail.com",
+  "password": "securepassword",
   "role": "Tecnico"
 }
 ```
-#### Respuesta:
+
+**Respuesta**:
 ```json
 {
   "message": "Usuario creado correctamente",
   "user": {
-    "id": "1a2b3c4d5e6f7g8h9i0j",
-    "name": "John Doe",
-    "email": "johndoe@gmail.com",
-    "role": "Tecnico",
-    "status": true
+    "id": "<ID_DEL_USUARIO>",
+    "name": "Juan Pérez",
+    "email": "juan.perez@gmail.com",
+    "role": "Tecnico"
   }
 }
+```
+
+### Materiales
+#### Crear material
+**URL**: `POST /api/materials/create`
+
+**Cuerpo**:
+```json
+{
+  "name": "Cable UTP",
+  "quantity": 100,
+  "description": "Cable de red categoría 6."
+}
+```
+
+**Respuesta**:
+```json
+{
+  "message": "Material creado exitosamente",
+  "material": {
+    "id": "<ID_DEL_MATERIAL>",
+    "name": "Cable UTP",
+    "quantity": 100,
+    "description": "Cable de red categoría 6."
+  }
+}
+```
+
+### Asignaciones
+#### Crear asignación
+**URL**: `POST /api/assignments/create`
+
+**Cuerpo**:
+```json
+{
+  "name": "Instalación Red",
+  "technicianId": "<ID_TECNICO>",
+  "materials": [
+    {
+      "materialId": "<ID_MATERIAL>",
+      "quantity": 10
+    }
+  ]
+}
+```
+
+**Respuesta**:
+```json
+{
+  "message": "Asignación creada exitosamente",
+  "assignment": {
+    "id": "<ID_ASIGNACION>",
+    "name": "Instalación Red",
+    "status": "Pendiente"
+  }
+}
+```
+```
+
+
 
 
